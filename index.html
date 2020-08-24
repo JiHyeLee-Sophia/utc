@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UIC TIME CONVERTER</title>
+</head>
+
+<body>
+    <span name="jhlee-time" data-utcTime="2020-08-24T04:03:28.434+00:00"></span>
+    <span name="jhlee-time" data-utcTime="2020-08-24T04:03:28.434+00:00"></span>
+    <span name="jhlee" data-utcTime="2020-08-24T04:03:28.434+00:00"></span>
+</body>
+<script>
+    class UtcTimeConverter {
+        constructor(targetElement, dataTag, displayFormat) {
+            this.targetElement = targetElement;
+            this.dataTag = dataTag;
+            this.displayFormat = displayFormat;
+        }
+        doConvert() {
+            const span = document.querySelectorAll(`span[name="${this.targetElement}"]`);
+            span.forEach(each => {
+                const utcDate = each.getAttribute(`data-${this.dataTag}`);
+                const localDate = new Date(utcDate);
+
+                const convertedDate = this.displayFormat.replace(/(yyyy|MM|dd|HH-mm)/gi, function (form) {
+                    switch (form) {
+                        case "yyyy": return localDate.getFullYear();
+                        case "MM": return ('0' + (localDate.getMonth() + 1)).slice(-2);
+                        case "dd":  return ('0' + localDate.getDate()).slice(-2);
+                        case "HH-mm":  return `${('0' + localDate.getHours()).slice(-2)}:${('0' + localDate.getMinutes()).slice(-2)}`;
+                        default: return;
+                    }
+                })
+                each.textContent = convertedDate;
+            })
+        }
+    }
+
+    const converter = new UtcTimeConverter("jhlee-time", 'utcTime', 'yyyy-MM-dd HH-mm');
+    converter.doConvert();
+
+
+</script>
+
+</html>
